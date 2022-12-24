@@ -77,7 +77,7 @@ public class PlaySoundCommand {
 
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")
-				.append(StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).playAll().getUuid())
+				.append(StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).play().getUuid())
 				.toString()
 				), false);
 
