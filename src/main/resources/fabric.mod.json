@@ -34,6 +34,9 @@
     "fabricloader": ">=0.14.9",
     "fabric-api": "*",
     "minecraft": "~1.19.2",
+    "cardinal-components-base": ">=5.0.2",
+    "cardinal-components-chunk": ">=5.0.2",
+    "cardinal-components-entity": ">=5.0.2",
     "java": ">=17"
   },
   "suggests": {
