@@ -1,7 +1,8 @@
 package net.denanu.stoppablesound.components;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.denanu.stoppablesound.events.ClientStoppableSound;
@@ -13,14 +14,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public abstract class SoundComponent<T> implements AutoSyncedComponent {
 	final T provider;
-	HashSet<StoppableSound> activeSounds = new HashSet<>();
+	HashMap<Long, StoppableSound> activeSounds = new HashMap<>();
 
 	SoundComponent(final T provider) {
 		this.provider = provider;
 	}
 
 	public SoundComponent<T> play(final StoppableSound sound) {
-		this.activeSounds.add(sound);
+		this.activeSounds.put(sound.getUuid(), sound);
 
 		this.sync(sound, true);
 
@@ -30,7 +31,7 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 	abstract void sync(StoppableSound sound, boolean add);
 
 	public void stop(final StoppableSound sound) {
-		this.activeSounds.remove(sound);
+		this.activeSounds.remove(sound.getUuid(), sound);
 	}
 
 	@Override
@@ -43,13 +44,13 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 
 	@Override
 	public void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity player) {
-		SoundComponent.writeSyncPacket(buf, player, this.activeSounds, true);
+		SoundComponent.writeSyncPacket(buf, player, this.activeSounds.entrySet(), true);
 	}
 
-	public static void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity player, final Collection<StoppableSound> sounds, final boolean add) {
+	public static void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity player, final Set<Entry<Long, StoppableSound>> set, final boolean add) {
 		buf.writeBoolean(add);
-		buf.writeCollection(sounds, (buf2, sound) -> {
-			sound.writeToBuf(buf2);
+		buf.writeCollection(set, (buf2, sound) -> {
+			sound.getValue().writeToBuf(buf2);
 		});
 	}
 
@@ -60,11 +61,12 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 			final ClientStoppableSound sound = new ClientStoppableSound(buf2);
 
 			if (add) {
-				this.activeSounds.add(sound);
+				this.activeSounds.put(sound.getUuid(), sound);
 				SoundUtils.playSound(sound);
 			}
 			else {
-				this.activeSounds.remove(sound);
+				final ClientStoppableSound csound = (ClientStoppableSound)this.activeSounds.remove(sound.getUuid());
+				csound.terminate();
 			}
 
 			return 1;

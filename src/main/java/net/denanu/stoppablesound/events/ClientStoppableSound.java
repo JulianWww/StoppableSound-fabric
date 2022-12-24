@@ -17,4 +17,8 @@ public class ClientStoppableSound extends StoppableSound {
 	public ClientStoppableSound(final PacketByteBuf buf) {
 		super(buf);
 	}
+
+	public void terminate() {
+		this.soundPlayer.terminate();
+	}
 }
