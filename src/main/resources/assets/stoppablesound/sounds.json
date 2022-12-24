@@ -1,0 +1,8 @@
+{
+	"gates_of_glory": {
+		"subtitle": "subtitles.stoppablesound.gates_of_glory",
+		"sounds": [ 
+			"stoppablesound:gates_of_glory"
+		]
+	}
+}
