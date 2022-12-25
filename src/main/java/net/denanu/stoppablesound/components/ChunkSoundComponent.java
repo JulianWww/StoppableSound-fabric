@@ -12,8 +12,13 @@ public class ChunkSoundComponent extends SoundComponent<Chunk> {
 	}
 
 	@Override
-	void sync(final StoppableSound sound, final boolean add) {
-		ChunkComponents.SOUNDS.sync(this.provider, (buf, p) -> SoundComponent.writeSyncPacket(buf, p, ImmutableMap.of(sound.getUuid(), sound).entrySet(), add));
+	void sync(final StoppableSound sound) {
+		ChunkComponents.SOUNDS.sync(this.provider, (buf, p) -> SoundComponent.writeSyncPacket(buf, p, ImmutableMap.of(sound.getUuid(), sound).entrySet(), SoundComponent.MINIMAL_ADD));
+	}
+
+	@Override
+	void sync(final long uuid) {
+		ChunkComponents.SOUNDS.sync(this.provider, (buf, p) -> SoundComponent.writeSyncPacket(buf, p, uuid));
 	}
 
 }

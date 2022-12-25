@@ -5,14 +5,14 @@ import net.denanu.stoppablesound.components.ChunkSoundComponent;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 
 public class ServerStoppableSound extends StoppableSound {
 	private final ServerWorld world;
 	private ChunkSoundComponent chunkSound = null;
 
-	public ServerStoppableSound(final ServerWorld world, final int x, final int y, final int z, final SoundEvent event, final SoundCategory category,
-			final float volume, final float pitch) {
-		super(world, x, y, z, event, category, volume, pitch);
+	public ServerStoppableSound(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+		super(pos, event, category, volume, pitch);
 		this.world = world;
 	}
 
@@ -21,7 +21,7 @@ public class ServerStoppableSound extends StoppableSound {
 	}
 
 	public StoppableSound play() {
-		this.chunkSound = ChunkComponents.SOUNDS.get(this.world.getChunk((int)this.getX(), (int)this.getY()));
+		this.chunkSound = ChunkComponents.SOUNDS.get(this.world.getChunk(this.getPos()));
 		this.chunkSound.play(this);
 		return this;
 	}
@@ -30,5 +30,9 @@ public class ServerStoppableSound extends StoppableSound {
 		if (this.chunkSound != null) {
 			this.chunkSound.stop(this);
 		}
+	}
+
+	public static void stop(final long key, final BlockPos pos, final ServerWorld world) {
+		ChunkComponents.SOUNDS.get(world.getChunk(pos)).stop(key);
 	}
 }

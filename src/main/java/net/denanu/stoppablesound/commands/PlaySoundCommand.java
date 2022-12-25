@@ -21,6 +21,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class PlaySoundCommand {
@@ -77,7 +78,7 @@ public class PlaySoundCommand {
 
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")
-				.append(StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).play().getUuid())
+				.append(StoppableSound.of(source.getWorld(), new BlockPos(pos), DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
 				.toString()
 				), false);
 
