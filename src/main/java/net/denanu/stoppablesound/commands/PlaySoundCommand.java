@@ -62,6 +62,26 @@ public class PlaySoundCommand {
 												)
 										)
 								)
+						.then(CommandManager.argument("entity", EntityArgumentType.entity())
+								.executes(context -> PlaySoundCommand
+										.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType.getEntity(context, "entity"), 1.0f, 1.0f, 0.0f))
+								.then(CommandManager.argument("volume", FloatArgumentType.floatArg(0.0f))
+										.executes(context -> PlaySoundCommand
+												.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType
+														.getEntity(context, "entity"), context.getArgument("volume", Float.class), 1.0f, 0.0f))
+										.then(CommandManager.argument("pitch", FloatArgumentType.floatArg(0.0f, 2.0f))
+												.executes(context -> PlaySoundCommand
+														.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType
+																.getEntity(context, "entity"), context.getArgument("volume", Float.class), context.getArgument("pitch", Float.class), 0.0f))
+												.then(CommandManager.argument("minVolume", FloatArgumentType.floatArg(0.0f, 1.0f)).executes(context -> PlaySoundCommand
+														.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType
+																.getEntity(context, "entity"), context.getArgument("volume", Float.class), context.getArgument("pitch", Float.class), context.getArgument("minVolume", Float.class)
+																)
+														)
+														)
+												)
+										)
+								)
 						);
 	}
 
