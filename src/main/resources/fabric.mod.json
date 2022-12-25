@@ -27,6 +27,9 @@
     ],
     "cardinal-components-chunk": [
        "net.denanu.stoppablesound.components.ChunkComponents"
+    ],
+    "cardinal-components-entity": [
+       "net.denanu.stoppablesound.components.EntityComponents"
     ]
   },
   "mixins": [
@@ -52,7 +55,8 @@
   
   "custom": {
         "cardinal-components": [
-            "stoppablesound:sounds"
+            "stoppablesound:csounds",
+            "stoppablesound:esounds"
         ]
     }
 }

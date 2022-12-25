@@ -15,6 +15,7 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.command.suggestion.SuggestionProviders;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -79,6 +80,27 @@ public class PlaySoundCommand {
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")
 				.append(StoppableSound.of(source.getWorld(), new BlockPos(pos), DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
+				.toString()
+				), false);
+
+		return 1;
+	}
+
+	private static int execute(
+			final ServerCommandSource source,
+			final Collection<ServerPlayerEntity> targets,
+			final Identifier sound,
+			final SoundCategory category,
+			final Entity entity,
+			final float volume,
+			final float pitch,
+			final float minVolume) throws CommandSyntaxException {
+
+		//  StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).playAll()
+
+		source.sendFeedback(Text.literal(
+				new StringBuilder().append("Stop key is: ")
+				.append(StoppableSound.of(source.getWorld(), entity, DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
 				.toString()
 				), false);
 

@@ -1,6 +1,6 @@
 package net.denanu.stoppablesound.utils;
 
-import net.denanu.stoppablesound.events.ClientStoppableSound;
+import net.denanu.stoppablesound.events.ClientStoppablePosSound;
 import net.denanu.stoppablesound.sounds.ITerminatable;
 import net.denanu.stoppablesound.sounds.MovingPositionSoundInstance;
 import net.minecraft.client.MinecraftClient;
@@ -30,13 +30,11 @@ public class SoundUtils {
 		return positionedSoundInstance;
 	}
 
-	public static void playSound(final ClientStoppableSound sound) {
+	public static void playSound(final ClientStoppablePosSound sound) {
 		sound.setSoundPlayer(
 				SoundUtils.playSound(
 						MinecraftClient.getInstance(),
-						sound.getX(),
-						sound.getY(),
-						sound.getZ(),
+						sound.getPlacer(),
 						sound.getEvent(),
 						sound.getCategory(),
 						sound.getVolume(),
