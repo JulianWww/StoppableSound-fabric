@@ -28,7 +28,7 @@ jobs:
       - name: "Publish maven to wandhoven.ddns.net"
         uses: appleboy/scp-action@master
         with:
-          host: "wandhoven.ddns.net"
+          host: "wandhoven.gotdns.ch"
           username: ${{ secrets.SCP_MAVEN_USERNAME }}
           key: ${{ secrets.SCP_MAVENKEY }}
           source: "maven/"
