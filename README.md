@@ -1,6 +1,6 @@
 # Fabric Example Mod
 
-[![Development Builds](https://github.com/JulianWww/StoppableSound-fabric/workflows/Development%20Builds/badge.svg)](https://github.com/JulianWww/StoppableSound-fabric/actions?query=workflow%3A%22Development+Builds%22)
+[![Build](https://github.com/JulianWww/StoppableSound-fabric/actions/workflows/build.yml/badge.svg)](https://github.com/JulianWww/StoppableSound-fabric/actions/workflows/build.yml)
 [![GitHub downloads](https://img.shields.io/github/downloads/JulianWww/StoppableSound-fabric/total?label=Github%20downloads&logo=github)](https://github.com/JulianWww/StoppableSound-fabric/releases)
 [![GitHub contributors](https://img.shields.io/github/contributors/JulianWww/StoppableSound-fabric?label=Contributors&logo=github)](https://github.com/JulianWww/StoppableSound-fabric/graphs/contributors)
 
