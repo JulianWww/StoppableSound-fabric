@@ -7,6 +7,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 public abstract class StoppableSound<T> {
 	private final T placer;
@@ -24,25 +25,24 @@ public abstract class StoppableSound<T> {
 		this.uuid = UUIDProvider.getUUID();
 	}
 
-	public StoppableSound(final PacketByteBuf buf) {
-		this.placer		= this.readPlacer(buf);
+	public StoppableSound(final PacketByteBuf buf, final World world) {
+		this.placer 	= this.readPlacer(buf, world);
 		this.event 		= buf.readRegistryValue(Registry.SOUND_EVENT);
 		this.category 	= buf.readEnumConstant(SoundCategory.class);
 		this.volume 	= buf.readFloat();
 		this.pitch 		= buf.readFloat();
 		this.uuid 		= buf.readLong();
-
 	}
 
-	protected abstract T readPlacer(PacketByteBuf buf);
+	protected abstract T readPlacer(PacketByteBuf buf, World world);
 	protected abstract void writePlacer(PacketByteBuf buf, T placer);
 
 	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
 		return new ServerStoppablePosSound(world, pos, event, category, volume, pitch);
 	}
 
-	public static ServerStoppableEntitySound of(final ServerWorld world, final Entity target, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		return new ServerStoppableEntitySound(world, target, event, category, volume, pitch);
+	public static ServerStoppableEntitySound of(final Entity target, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+		return new ServerStoppableEntitySound(target, event, category, volume, pitch);
 	}
 
 	public T getPlacer() {

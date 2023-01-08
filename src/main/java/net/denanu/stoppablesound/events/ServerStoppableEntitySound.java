@@ -7,11 +7,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 
-public class ServerStoppableEntitySound extends StoppableEntitySound<ServerWorld> {
+public class ServerStoppableEntitySound extends StoppableEntitySound {
 	private EntitySoundComponent chunkSound = null;
 
-	public ServerStoppableEntitySound(final ServerWorld world, final Entity entity, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		super(world, entity, event, category, volume, pitch);
+	public ServerStoppableEntitySound(final Entity entity, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+		super(entity, event, category, volume, pitch);
 	}
 
 	public ServerStoppableEntitySound play() {

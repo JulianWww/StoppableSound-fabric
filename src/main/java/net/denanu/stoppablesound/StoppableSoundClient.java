@@ -6,6 +6,7 @@ public class StoppableSoundClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		Debugger.clientSetup();
 	}
 
 }

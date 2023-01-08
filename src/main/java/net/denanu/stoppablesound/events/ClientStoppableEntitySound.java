@@ -4,7 +4,7 @@ import net.denanu.stoppablesound.sounds.ITerminatable;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
 
-public class ClientStoppableEntitySound extends StoppableEntitySound<World> {
+public class ClientStoppableEntitySound extends StoppableEntitySound {
 	private ITerminatable soundPlayer;
 
 	public ClientStoppableEntitySound(final World world, final PacketByteBuf buf) {

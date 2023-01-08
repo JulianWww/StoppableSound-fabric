@@ -22,9 +22,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+@Debug
 public class PlaySoundCommand {
 	private static final SimpleCommandExceptionType FAILED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.playsound.failed"));
 
@@ -97,6 +99,8 @@ public class PlaySoundCommand {
 
 		//  StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).playAll()
 
+		source.getWorld().playSound(null, null, null, category, pitch, minVolume);
+
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")
 				.append(StoppableSound.of(source.getWorld(), new BlockPos(pos), DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
@@ -120,7 +124,7 @@ public class PlaySoundCommand {
 
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")
-				.append(StoppableSound.of(source.getWorld(), entity, DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
+				.append(StoppableSound.of(entity, DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
 				.toString()
 				), false);
 

@@ -2,6 +2,7 @@ package net.denanu.stoppablesound.components;
 
 import net.denanu.stoppablesound.events.ClientStoppableEntitySound;
 import net.denanu.stoppablesound.events.StoppableSound;
+import net.denanu.stoppablesound.utils.SoundUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 
@@ -25,6 +26,6 @@ public class EntitySoundComponent extends SoundComponent<Entity, Entity> {
 	protected void syncAddElement(final PacketByteBuf buf) {
 		final ClientStoppableEntitySound sound = new ClientStoppableEntitySound(this.provider.world, buf);
 		this.activeSounds.put(sound.getUuid(), sound);
-		//SoundUtils.playSound(sound);
+		SoundUtils.playSound(sound);
 	}
 }
