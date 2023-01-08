@@ -7,11 +7,11 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 
-public class ServerStoppableSound extends StoppableSound {
+public class ServerStoppablePosSound extends StoppablePosSound {
 	private final ServerWorld world;
 	private ChunkSoundComponent chunkSound = null;
 
-	public ServerStoppableSound(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+	public ServerStoppablePosSound(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
 		super(pos, event, category, volume, pitch);
 		this.world = world;
 	}
@@ -21,7 +21,7 @@ public class ServerStoppableSound extends StoppableSound {
 	}
 
 	public StoppableSound play() {
-		this.chunkSound = ChunkComponents.SOUNDS.get(this.world.getChunk(this.getPos()));
+		this.chunkSound = ChunkComponents.SOUNDS.get(this.world.getChunk(this.getPlacer()));
 		this.chunkSound.play(this);
 		return this;
 	}

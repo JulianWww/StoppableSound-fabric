@@ -8,7 +8,7 @@ import net.denanu.stoppablesound.StoppableSound;
 import net.minecraft.util.Identifier;
 
 public class ChunkComponents implements ChunkComponentInitializer {
-	public static final ComponentKey<ChunkSoundComponent> SOUNDS = ComponentRegistry.getOrCreate(Identifier.of(StoppableSound.MOD_ID, "sounds"), ChunkSoundComponent.class);
+	public static final ComponentKey<ChunkSoundComponent> SOUNDS = ComponentRegistry.getOrCreate(Identifier.of(StoppableSound.MOD_ID, "csounds"), ChunkSoundComponent.class);
 
 	@Override
 	public void registerChunkComponentFactories(final ChunkComponentFactoryRegistry registry) {

@@ -5,7 +5,7 @@ import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.denanu.stoppablesound.events.ServerStoppableSound;
+import net.denanu.stoppablesound.events.ServerStoppablePosSound;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -26,7 +26,7 @@ public class StopSoundCommand {
 	private static int stopSound(final CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		final long key = LongArgumentType.getLong(context, "key");
 		final BlockPos pos = BlockPosArgumentType.getBlockPos(context, "pos");
-		ServerStoppableSound.stop(key, pos, context.getSource().getWorld());
+		ServerStoppablePosSound.stop(key, pos, context.getSource().getWorld());
 		return 1;
 	}
 }
