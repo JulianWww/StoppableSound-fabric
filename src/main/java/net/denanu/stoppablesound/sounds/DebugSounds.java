@@ -1,5 +1,6 @@
 package net.denanu.stoppablesound.sounds;
 
+import net.denanu.stoppablesound.Debugger;
 import net.denanu.stoppablesound.StoppableSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -9,8 +10,14 @@ public class DebugSounds {
 	public static Identifier GATES_OF_GLORY_ID		= Identifier.of(StoppableSound.MOD_ID, "gates_of_glory");
 
 
-	public static SoundEvent GATES_OF_GLORY_EVENT	= DebugSounds.register(DebugSounds.GATES_OF_GLORY_ID);
+	public static SoundEvent GATES_OF_GLORY_EVENT	= DebugSounds.debugRegister(DebugSounds.GATES_OF_GLORY_ID);
 
+	public static SoundEvent debugRegister(final Identifier id) {
+		if (Debugger.isDebug()) {
+			return DebugSounds.register(id);
+		}
+		return null;
+	}
 
 	private static SoundEvent register(final Identifier id) {
 		return DebugSounds.register(new SoundEvent(id), id);
