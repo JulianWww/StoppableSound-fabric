@@ -4,27 +4,28 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.denanu.stoppablesound.events.ClientStoppableSound;
+import net.denanu.stoppablesound.events.ClientStoppablePosSound;
 import net.denanu.stoppablesound.events.StoppableSound;
-import net.denanu.stoppablesound.utils.SoundUtils;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public abstract class SoundComponent<T> implements AutoSyncedComponent {
+public abstract class SoundComponent<T, P> implements AutoSyncedComponent {
 	protected static final byte FULL_SYNC 		= 0;
 	protected static final byte MINIMAL_ADD 	= 1;
 	protected static final byte MINIMAL_REMOVE	= 2;
 
-	final T provider;
-	HashMap<Long, StoppableSound> activeSounds = new HashMap<>();
+	protected final T provider;
+	protected HashMap<Long, StoppableSound<P>> activeSounds = new HashMap<>();
 
 	SoundComponent(final T provider) {
 		this.provider = provider;
 	}
 
-	public SoundComponent<T> play(final StoppableSound sound) {
+	public SoundComponent<T, P> play(final StoppableSound<P> sound) {
 		this.activeSounds.put(sound.getUuid(), sound);
 
 		this.sync(sound);
@@ -32,7 +33,7 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 		return this;
 	}
 
-	public void stop(final StoppableSound sound) {
+	public void stop(final StoppableSound<P> sound) {
 		this.activeSounds.remove(sound.getUuid(), sound);
 
 		this.sync(sound.getUuid());
@@ -44,7 +45,7 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 		this.sync(key);
 	}
 
-	abstract void sync(StoppableSound sound);
+	abstract void sync(StoppableSound<P> sound);
 	abstract void sync(long uuid);
 
 	@Override
@@ -57,13 +58,20 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 
 	@Override
 	public void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity player) {
-		SoundComponent.writeSyncPacket(buf, player, this.activeSounds.entrySet(), SoundComponent.FULL_SYNC);
+		SoundComponent.writeSyncPacket(buf, player, this.activeSounds.entrySet());
 	}
 
-	public static void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity player, final Set<Entry<Long, StoppableSound>> set, final byte eventType) {
-		buf.writeByte(eventType);
+	public static <P> void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity player, final Set<Entry<Long, StoppableSound<P>>> set) {
+		buf.writeByte(SoundComponent.FULL_SYNC);
 		buf.writeCollection(set, (buf2, sound) -> {
 			sound.getValue().writeToBuf(buf2);
+		});
+	}
+
+	public static <P> void writeSyncPacket(final PacketByteBuf buf, final ServerPlayerEntity p, final StoppableSound<P> sound) {
+		buf.writeByte(SoundComponent.MINIMAL_ADD);
+		buf.writeCollection(ImmutableList.of(sound), (buf2, sound2) -> {
+			sound2.writeToBuf(buf2);
 		});
 	}
 
@@ -82,18 +90,18 @@ public abstract class SoundComponent<T> implements AutoSyncedComponent {
 		// mininmal remove
 		if (eventType == SoundComponent.MINIMAL_REMOVE) {
 			final long uuid = buf.readLong();
-			final ClientStoppableSound csound = (ClientStoppableSound)this.activeSounds.remove(uuid);
+			final ClientStoppablePosSound csound = (ClientStoppablePosSound)this.activeSounds.remove(uuid);
 			csound.terminate();
 		}
 		// full sync and minimal add add new sounds
 		else {
 			buf.readList(buf2 -> {
-				final ClientStoppableSound sound = new ClientStoppableSound(buf2);
-				this.activeSounds.put(sound.getUuid(), sound);
-				SoundUtils.playSound(sound);
+				this.syncAddElement(buf);
 
 				return 1;
 			});
 		}
 	}
+
+	protected abstract void syncAddElement(final PacketByteBuf buf);
 }

@@ -15,15 +15,18 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.command.suggestion.SuggestionProviders;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.annotation.Debug;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+@Debug
 public class PlaySoundCommand {
 	private static final SimpleCommandExceptionType FAILED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.playsound.failed"));
 
@@ -61,6 +64,26 @@ public class PlaySoundCommand {
 												)
 										)
 								)
+						.then(CommandManager.argument("entity", EntityArgumentType.entity())
+								.executes(context -> PlaySoundCommand
+										.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType.getEntity(context, "entity"), 1.0f, 1.0f, 0.0f))
+								.then(CommandManager.argument("volume", FloatArgumentType.floatArg(0.0f))
+										.executes(context -> PlaySoundCommand
+												.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType
+														.getEntity(context, "entity"), context.getArgument("volume", Float.class), 1.0f, 0.0f))
+										.then(CommandManager.argument("pitch", FloatArgumentType.floatArg(0.0f, 2.0f))
+												.executes(context -> PlaySoundCommand
+														.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType
+																.getEntity(context, "entity"), context.getArgument("volume", Float.class), context.getArgument("pitch", Float.class), 0.0f))
+												.then(CommandManager.argument("minVolume", FloatArgumentType.floatArg(0.0f, 1.0f)).executes(context -> PlaySoundCommand
+														.execute(context.getSource(), EntityArgumentType.getPlayers(context, "targets"), IdentifierArgumentType.getIdentifier(context, "sound"), category, EntityArgumentType
+																.getEntity(context, "entity"), context.getArgument("volume", Float.class), context.getArgument("pitch", Float.class), context.getArgument("minVolume", Float.class)
+																)
+														)
+														)
+												)
+										)
+								)
 						);
 	}
 
@@ -76,9 +99,32 @@ public class PlaySoundCommand {
 
 		//  StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).playAll()
 
+		source.getWorld().playSound(null, null, null, category, pitch, minVolume);
+
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")
 				.append(StoppableSound.of(source.getWorld(), new BlockPos(pos), DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
+				.toString()
+				), false);
+
+		return 1;
+	}
+
+	private static int execute(
+			final ServerCommandSource source,
+			final Collection<ServerPlayerEntity> targets,
+			final Identifier sound,
+			final SoundCategory category,
+			final Entity entity,
+			final float volume,
+			final float pitch,
+			final float minVolume) throws CommandSyntaxException {
+
+		//  StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).playAll()
+
+		source.sendFeedback(Text.literal(
+				new StringBuilder().append("Stop key is: ")
+				.append(StoppableSound.of(entity, DebugSounds.GATES_OF_GLORY_EVENT, category, volume, pitch).play().getUuid())
 				.toString()
 				), false);
 

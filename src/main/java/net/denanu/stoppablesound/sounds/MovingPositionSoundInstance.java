@@ -1,7 +1,9 @@
 package net.denanu.stoppablesound.sounds;
 
+import net.denanu.stoppablesound.utils.SoundUtils;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.TickableSoundInstance;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -19,6 +21,7 @@ public class MovingPositionSoundInstance extends PositionedSoundInstance impleme
 		super(sound, category, volume, pitch, random, x, y, z);
 		this.defaultVolume = volume;
 		this.player = player;
+		this.attenuationType = SoundInstance.AttenuationType.NONE;
 	}
 
 	public MovingPositionSoundInstance(final SoundEvent sound, final SoundCategory category, final float volume, final float pitch,
@@ -26,6 +29,7 @@ public class MovingPositionSoundInstance extends PositionedSoundInstance impleme
 		super(sound, category, volume, pitch, random, pos);
 		this.defaultVolume = volume;
 		this.player = player;
+		this.attenuationType = SoundInstance.AttenuationType.NONE;
 	}
 
 	public MovingPositionSoundInstance(final Identifier id, final SoundCategory category, final float volume, final float pitch, final Random random,
@@ -34,6 +38,7 @@ public class MovingPositionSoundInstance extends PositionedSoundInstance impleme
 		super(id, category, volume, pitch, random, repeat, repeatDelay, attenuationType, x, y, z, relative);
 		this.defaultVolume = volume;
 		this.player = player;
+		this.attenuationType = SoundInstance.AttenuationType.NONE;
 	}
 
 
@@ -44,12 +49,11 @@ public class MovingPositionSoundInstance extends PositionedSoundInstance impleme
 
 	@Override
 	public void tick() {
-		this.volume = (float) Math.min(this.defaultVolume, this.defaultVolume * 16f / this.player.squaredDistanceTo(this.x, this.y, this.z));
+		this.volume = SoundUtils.computeVolumeFade(this.defaultVolume, this.player, this.x, this.y, this.z);
 	}
 
 	@Override
 	public void terminate() {
 		this.done = true;
 	}
-
 }
