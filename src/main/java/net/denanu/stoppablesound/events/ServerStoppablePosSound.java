@@ -20,7 +20,7 @@ public class ServerStoppablePosSound extends StoppablePosSound {
 		return this.world;
 	}
 
-	public StoppableSound play() {
+	public ServerStoppablePosSound play() {
 		this.chunkSound = ChunkComponents.SOUNDS.get(this.world.getChunk(this.getPlacer()));
 		this.chunkSound.play(this);
 		return this;
