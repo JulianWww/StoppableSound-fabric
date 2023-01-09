@@ -3,7 +3,7 @@ package net.denanu.stoppablesound.utils;
 public class TimeBuilder {
 	int h = 0, m = 0, s = 0, t = 0;
 
-	public TimeBuilder of() {
+	public static TimeBuilder of() {
 		return new TimeBuilder();
 	}
 
