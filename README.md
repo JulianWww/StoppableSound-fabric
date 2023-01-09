@@ -6,14 +6,31 @@
 
 ## Setup
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+```gradle
+repositories {
+    maven {
+        name = 'Denanu Mods'
+        url = 'https://wandhoven.ddns.net/maven/'
+    }
+}
 
-## License
+dependencies {
+    modImplementation "net.denanu.StoppableSound:StoppableSound-<Minecraft_Version>:<StoppableSound_version>"
+}
+```
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+# Usage
+Play at a fixed location:
+```Java
+var stoppable = StoppableSound.of(world, pos, sound, category, volume, pitch).play();
+```
 
-## Credits:
-* Gates Of Glory by Alexander Nakarada | https://www.serpentsoundstudios.com\
-  Music promoted by https://www.free-stock-music.com\
-  Attribution 4.0 International (CC BY 4.0)\
-  https://creativecommons.org/licenses/by/4.0/
+Play at an entity:
+```Java
+var stoppable = StoppableSound.of(entity,sound, category, volume, pitch).play()
+```
+
+Stop a playing sound
+```Java
+stoppable.stop()
+```
