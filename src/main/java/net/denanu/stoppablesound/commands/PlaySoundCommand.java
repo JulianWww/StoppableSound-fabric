@@ -7,7 +7,6 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 
 import net.denanu.stoppablesound.events.StoppableSound;
 import net.denanu.stoppablesound.sounds.DebugSounds;
@@ -28,8 +27,6 @@ import net.minecraft.util.math.Vec3d;
 
 @Debug
 public class PlaySoundCommand {
-	private static final SimpleCommandExceptionType FAILED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.playsound.failed"));
-
 	public static void register(final CommandDispatcher<ServerCommandSource> dispatcher) {
 		final RequiredArgumentBuilder<ServerCommandSource, Identifier> requiredArgumentBuilder = CommandManager.argument("sound", IdentifierArgumentType.identifier()).suggests(SuggestionProviders.AVAILABLE_SOUNDS);
 		for (final SoundCategory soundCategory : SoundCategory.values()) {
