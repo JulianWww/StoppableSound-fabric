@@ -14,15 +14,16 @@ public abstract class StoppableSound<T> {
 	private final SoundEvent event;
 	private final SoundCategory category;
 	private final float volume, pitch;
-	private final long uuid;
+	private final long uuid, seed;
 
-	public StoppableSound(final T placer, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+	public StoppableSound(final T placer, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		this.placer = placer;
 		this.event = event;
 		this.category = category;
 		this.volume = volume;
 		this.pitch = pitch;
 		this.uuid = UUIDProvider.getUUID();
+		this.seed = seed;
 	}
 
 	public StoppableSound(final PacketByteBuf buf, final World world) {
@@ -32,17 +33,26 @@ public abstract class StoppableSound<T> {
 		this.volume 	= buf.readFloat();
 		this.pitch 		= buf.readFloat();
 		this.uuid 		= buf.readLong();
+		this.seed 		= buf.readLong();
 	}
 
 	protected abstract T readPlacer(PacketByteBuf buf, World world);
 	protected abstract void writePlacer(PacketByteBuf buf, T placer);
 
+	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		return new ServerStoppablePosSound(world, pos, event, category, volume, pitch, seed);
+	}
+
+	public static ServerStoppableEntitySound of(final Entity target, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		return new ServerStoppableEntitySound(target, event, category, volume, pitch, seed);
+	}
+
 	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		return new ServerStoppablePosSound(world, pos, event, category, volume, pitch);
+		return StoppableSound.of(world, pos, event, category, volume, pitch, world.getRandom().nextLong());
 	}
 
 	public static ServerStoppableEntitySound of(final Entity target, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		return new ServerStoppableEntitySound(target, event, category, volume, pitch);
+		return StoppableSound.of(target, event, category, volume, pitch, target.world.getRandom().nextLong());
 	}
 
 	public T getPlacer() {
@@ -69,6 +79,10 @@ public abstract class StoppableSound<T> {
 		return this.uuid;
 	}
 
+	public long getSeed() {
+		return this.seed;
+	}
+
 	public int hash() {
 		return Long.hashCode(this.uuid);
 	}
@@ -80,6 +94,7 @@ public abstract class StoppableSound<T> {
 		buf.writeFloat(this.volume);
 		buf.writeFloat(this.pitch);
 		buf.writeLong(this.uuid);
+		buf.writeLong(this.seed);
 	}
 
 	@Override

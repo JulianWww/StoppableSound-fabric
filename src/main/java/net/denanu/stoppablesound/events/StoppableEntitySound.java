@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 
 public class StoppableEntitySound extends StoppableSound<Entity> {
 
-	public StoppableEntitySound(final Entity placer, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		super(placer, event, category, volume, pitch);
+	public StoppableEntitySound(final Entity placer, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		super(placer, event, category, volume, pitch, seed);
 	}
 
 	public StoppableEntitySound(final World world, final PacketByteBuf buf) {

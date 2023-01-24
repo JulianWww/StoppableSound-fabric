@@ -15,12 +15,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 
 public class SoundUtils {
-	public static ITerminatable playSound(final MinecraftClient client, final BlockPos pos, final SoundEvent sound, final SoundCategory category, final float volume, final float pitch) {
-		return SoundUtils.playSound(client, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, sound, category, volume, pitch);
+	public static ITerminatable playSound(final MinecraftClient client, final BlockPos pos, final SoundEvent sound, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		return SoundUtils.playSound(client, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, sound, category, volume, pitch, seed);
 	}
 
-	public static ITerminatable playSound(final MinecraftClient client, final double x, final double y, final double z, final SoundEvent sound, final SoundCategory category, final float volume, final float pitch) {
-		return SoundUtils.playSound(client, x, y, z, sound, category, volume, pitch, false, client.world.getRandom().nextLong());
+	public static ITerminatable playSound(final MinecraftClient client, final double x, final double y, final double z, final SoundEvent sound, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		return SoundUtils.playSound(client, x, y, z, sound, category, volume, pitch, false, seed);
 	}
 
 	public static ITerminatable playSound(final MinecraftClient client, final double x, final double y, final double z, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final boolean useDistance, final long seed) {
@@ -30,8 +30,8 @@ public class SoundUtils {
 		return positionedSoundInstance;
 	}
 
-	public static ITerminatable playSound(final MinecraftClient client, final Entity entity, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		return SoundUtils.playSound(client, event, category, volume, pitch, entity, false, client.world.getRandom().nextLong());
+	public static ITerminatable playSound(final MinecraftClient client, final Entity entity, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		return SoundUtils.playSound(client, event, category, volume, pitch, entity, false, seed);
 	}
 
 	public static ITerminatable playSound(final MinecraftClient client, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final Entity entity, final boolean useDistance, final long seed) {
@@ -58,7 +58,8 @@ public class SoundUtils {
 						sound.getEvent(),
 						sound.getCategory(),
 						sound.getVolume(),
-						sound.getPitch()
+						sound.getPitch(),
+						sound.getSeed()
 						)
 				);
 	}
@@ -71,7 +72,8 @@ public class SoundUtils {
 						sound.getEvent(),
 						sound.getCategory(),
 						sound.getVolume(),
-						sound.getPitch()
+						sound.getPitch(),
+						sound.getSeed()
 						)
 				);
 	}

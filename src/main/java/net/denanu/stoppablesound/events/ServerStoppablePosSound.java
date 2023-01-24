@@ -11,8 +11,8 @@ public class ServerStoppablePosSound extends StoppablePosSound {
 	private final ServerWorld world;
 	private ChunkSoundComponent chunkSound = null;
 
-	public ServerStoppablePosSound(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
-		super(pos, event, category, volume, pitch);
+	public ServerStoppablePosSound(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+		super(pos, event, category, volume, pitch, seed);
 		this.world = world;
 	}
 
