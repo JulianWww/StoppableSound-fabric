@@ -96,7 +96,7 @@ public class PlaySoundCommand {
 
 		//  StoppableSound.of(source.getWorld(), 0, 0, 0, DebugSounds.GATES_OF_GLORY_EVENT, category, 1f, 1f).playAll()
 
-		source.getWorld().playSound(null, null, null, category, pitch, minVolume);
+		//source.getWorld().playSound(null, null, null, category, pitch, minVolume);
 
 		source.sendFeedback(Text.literal(
 				new StringBuilder().append("Stop key is: ")

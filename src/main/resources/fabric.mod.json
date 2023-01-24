@@ -57,6 +57,9 @@
         "cardinal-components": [
             "stoppablesound:csounds",
             "stoppablesound:esounds"
-        ]
+        ],
+        "modmenu": {
+		"badges": [ "library" ]
+	}
     }
 }

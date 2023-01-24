@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class DebugSounds {
-	public static Identifier GATES_OF_GLORY_ID		= Identifier.of(StoppableSound.MOD_ID, "gates_of_glory");
+	public static Identifier GATES_OF_GLORY_ID		= Identifier.of(StoppableSound.MOD_ID, "test");
 
 
 	public static SoundEvent GATES_OF_GLORY_EVENT	= DebugSounds.debugRegister(DebugSounds.GATES_OF_GLORY_ID);
