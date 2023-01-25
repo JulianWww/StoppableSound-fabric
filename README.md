@@ -20,6 +20,7 @@ dependencies {
 ```
 
 # Usage
+Stoppable sounds should only be used on the server. Clients side usage is unintended! Use the following code to ...
 Play at a fixed location:
 ```Java
 var stoppable = StoppableSound.of(world, pos, sound, category, volume, pitch).play();
