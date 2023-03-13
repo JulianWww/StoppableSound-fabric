@@ -3,6 +3,7 @@ package net.denanu.stoppablesound.events;
 import net.denanu.stoppablesound.components.EntityComponents;
 import net.denanu.stoppablesound.components.EntitySoundComponent;
 import net.minecraft.entity.Entity;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -10,7 +11,7 @@ import net.minecraft.sound.SoundEvent;
 public class ServerStoppableEntitySound extends StoppableEntitySound {
 	private EntitySoundComponent chunkSound = null;
 
-	public ServerStoppableEntitySound(final Entity entity, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+	public ServerStoppableEntitySound(final Entity entity, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		super(entity, event, category, volume, pitch, seed);
 	}
 

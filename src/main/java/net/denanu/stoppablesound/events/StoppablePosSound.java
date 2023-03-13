@@ -3,6 +3,7 @@ package net.denanu.stoppablesound.events;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 
 public class StoppablePosSound extends StoppableSound<BlockPos> {
 
-	public StoppablePosSound(final BlockPos placer, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+	public StoppablePosSound(final BlockPos placer, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		super(placer, event, category, volume, pitch, seed);
 	}
 
