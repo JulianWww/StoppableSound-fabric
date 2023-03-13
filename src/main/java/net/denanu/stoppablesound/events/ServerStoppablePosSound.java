@@ -2,6 +2,7 @@ package net.denanu.stoppablesound.events;
 
 import net.denanu.stoppablesound.components.ChunkComponents;
 import net.denanu.stoppablesound.components.ChunkSoundComponent;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -11,7 +12,7 @@ public class ServerStoppablePosSound extends StoppablePosSound {
 	private final ServerWorld world;
 	private ChunkSoundComponent chunkSound = null;
 
-	public ServerStoppablePosSound(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+	public ServerStoppablePosSound(final ServerWorld world, final BlockPos pos, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		super(pos, event, category, volume, pitch, seed);
 		this.world = world;
 	}

@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
 public class Debugger {
 	public static boolean isDebug() {
-		return false;
+		return true;
 	}
 	public static void serverSetup() {
 		if (Debugger.isDebug()) {

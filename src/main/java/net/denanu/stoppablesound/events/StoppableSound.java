@@ -2,11 +2,12 @@ package net.denanu.stoppablesound.events;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public abstract class StoppableSound<T> {
@@ -16,9 +17,9 @@ public abstract class StoppableSound<T> {
 	private final float volume, pitch;
 	private final long uuid, seed;
 
-	public StoppableSound(final T placer, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+	public StoppableSound(final T placer, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		this.placer = placer;
-		this.event = event;
+		this.event = event.value();
 		this.category = category;
 		this.volume = volume;
 		this.pitch = pitch;
@@ -28,7 +29,7 @@ public abstract class StoppableSound<T> {
 
 	public StoppableSound(final PacketByteBuf buf, final World world) {
 		this.placer 	= this.readPlacer(buf, world);
-		this.event 		= buf.readRegistryValue(Registry.SOUND_EVENT);
+		this.event 		= buf.readRegistryValue(Registries.SOUND_EVENT);
 		this.category 	= buf.readEnumConstant(SoundCategory.class);
 		this.volume 	= buf.readFloat();
 		this.pitch 		= buf.readFloat();
@@ -39,19 +40,19 @@ public abstract class StoppableSound<T> {
 	protected abstract T readPlacer(PacketByteBuf buf, World world);
 	protected abstract void writePlacer(PacketByteBuf buf, T placer);
 
-	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		return new ServerStoppablePosSound(world, pos, event, category, volume, pitch, seed);
 	}
 
-	public static ServerStoppableEntitySound of(final Entity target, final SoundEvent event, final SoundCategory category, final float volume, final float pitch, final long seed) {
+	public static ServerStoppableEntitySound of(final Entity target, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch, final long seed) {
 		return new ServerStoppableEntitySound(target, event, category, volume, pitch, seed);
 	}
 
-	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+	public static ServerStoppablePosSound of(final ServerWorld world, final BlockPos pos, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch) {
 		return StoppableSound.of(world, pos, event, category, volume, pitch, world.getRandom().nextLong());
 	}
 
-	public static ServerStoppableEntitySound of(final Entity target, final SoundEvent event, final SoundCategory category, final float volume, final float pitch) {
+	public static ServerStoppableEntitySound of(final Entity target, final RegistryEntry<SoundEvent> event, final SoundCategory category, final float volume, final float pitch) {
 		return StoppableSound.of(target, event, category, volume, pitch, target.world.getRandom().nextLong());
 	}
 
@@ -89,7 +90,7 @@ public abstract class StoppableSound<T> {
 
 	public void writeToBuf(final PacketByteBuf buf) {
 		this.writePlacer(buf, this.placer);
-		buf.writeRegistryValue(Registry.SOUND_EVENT, this.event);
+		buf.writeRegistryValue(Registries.SOUND_EVENT, this.event);
 		buf.writeEnumConstant(this.category);
 		buf.writeFloat(this.volume);
 		buf.writeFloat(this.pitch);
